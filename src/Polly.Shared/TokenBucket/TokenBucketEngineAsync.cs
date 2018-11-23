@@ -10,14 +10,14 @@ namespace Polly.TokenBucket
         internal static async Task<TResult> ImplementationAsync<TResult>(
             Func<Context, CancellationToken, Task<TResult>> action, 
             Context context, 
-            Func<Context, TimeSpan> timeoutProvider,
+            Func<Context, Tuple<double, double>> timeoutProvider,
             TokenBucketStrategy timeoutStrategy,
-            Func<Context, TimeSpan, Task, Exception, Task> onTimeoutAsync, 
+            Func<Context, Task, Exception, Task> onTimeoutAsync, 
             CancellationToken cancellationToken, 
             bool continueOnCapturedContext)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            TimeSpan timeout = timeoutProvider(context);
+            var timeout = timeoutProvider(context);
 
             using (CancellationTokenSource timeoutCancellationTokenSource = new CancellationTokenSource())
             {
@@ -30,7 +30,7 @@ namespace Polly.TokenBucket
                     {
                         if (timeoutStrategy == TokenBucketStrategy.Optimistic)
                         {
-                            SystemClock.CancelTokenAfter(timeoutCancellationTokenSource, timeout);
+                            //SystemClock.CancelTokenAfter(timeoutCancellationTokenSource, timeout);
                             return await action(context, combinedToken).ConfigureAwait(continueOnCapturedContext);
                         }
 
@@ -38,7 +38,7 @@ namespace Polly.TokenBucket
 
                         Task<TResult> timeoutTask = timeoutCancellationTokenSource.Token.AsTask<TResult>();
 
-                        SystemClock.CancelTokenAfter(timeoutCancellationTokenSource, timeout);
+                        //SystemClock.CancelTokenAfter(timeoutCancellationTokenSource, timeout);
 
                         actionTask = action(context, combinedToken);
 
@@ -49,7 +49,7 @@ namespace Polly.TokenBucket
                     {
                         if (timeoutCancellationTokenSource.IsCancellationRequested)
                         {
-                            await onTimeoutAsync(context, timeout, actionTask, ex).ConfigureAwait(continueOnCapturedContext);
+                            await onTimeoutAsync(context, actionTask, ex).ConfigureAwait(continueOnCapturedContext);
                             throw new TokenBucketRejectedException("The delegate executed asynchronously through TimeoutPolicy did not complete within the timeout.", ex);
                         }
 

@@ -4,17 +4,10 @@ namespace Polly.TokenBucket
 {
     internal static class TokenBucketValidator
     {
-        internal static void ValidateSecondsTimeout(int seconds)
+        internal static void ValidateSecondsTimeout(double bucketSize, double bucketFillRate)
         {
-            if (seconds <= 0) throw new ArgumentOutOfRangeException(nameof(seconds));
+            if (bucketSize <= 0) throw new ArgumentOutOfRangeException(nameof(bucketSize));
+            if (bucketFillRate <= 0) throw new ArgumentOutOfRangeException(nameof(bucketSize));
         }
-
-        internal static void ValidateTimeSpanTimeout(TimeSpan timeout)
-        {
-            if (timeout <= TimeSpan.Zero && timeout != System.Threading.Timeout.InfiniteTimeSpan)
-                throw new ArgumentOutOfRangeException(nameof(timeout), timeout,
-                    $"{nameof(timeout)} must be a positive TimeSpan (or Timeout.InfiniteTimeSpan to indicate no timeout)");
-        }
-
     }
 }

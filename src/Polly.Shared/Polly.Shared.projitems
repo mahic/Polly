@@ -161,6 +161,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)TokenBucket\TokenBucketPolicy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TokenBucket\TokenBucketPolicyAsync.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TokenBucket\TokenBucketRejectedException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TokenBucket\TokenBucketState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TokenBucket\TokenBucketStrategy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TokenBucket\TokenBucketSyntax.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TokenBucket\TokenBucketSyntaxAsync.cs" />

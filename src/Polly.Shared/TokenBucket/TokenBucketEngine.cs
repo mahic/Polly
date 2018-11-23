@@ -8,16 +8,15 @@ namespace Polly.TokenBucket
 {
     internal static partial class TokenBucketEngine
     {
-        internal static TResult Implementation<TResult>(
-            Func<Context, CancellationToken, TResult> action,
+        internal static TResult Implementation<TResult>(Func<Context, CancellationToken, TResult> action,
             Context context,
             CancellationToken cancellationToken,
-            Func<Context, TimeSpan> timeoutProvider,
+            Func<Context, Tuple<double, double>> tokenBucketProvider,
             TokenBucketStrategy timeoutStrategy,
-            Action<Context, TimeSpan, Task, Exception> onTimeout)
+            Action<Context, Task, Exception> onThrottle)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            TimeSpan timeout = timeoutProvider(context);
+            var timeout = tokenBucketProvider(context);
 
             using (CancellationTokenSource timeoutCancellationTokenSource = new CancellationTokenSource())
             {
@@ -30,13 +29,13 @@ namespace Polly.TokenBucket
                     {
                         if (timeoutStrategy == TokenBucketStrategy.Optimistic)
                         {
-                            SystemClock.CancelTokenAfter(timeoutCancellationTokenSource, timeout);
+                            //SystemClock.CancelTokenAfter(timeoutCancellationTokenSource, timeout);
                             return action(context, combinedToken);
                         }
 
                         // else: timeoutStrategy == TimeoutStrategy.Pessimistic
 
-                        SystemClock.CancelTokenAfter(timeoutCancellationTokenSource, timeout);
+                        //SystemClock.CancelTokenAfter(timeoutCancellationTokenSource, timeout);
 
                         actionTask = Task.Run(() =>
                             action(context, combinedToken)       // cancellation token here allows the user delegate to react to cancellation: possibly clear up; then throw an OperationCanceledException.
@@ -56,7 +55,7 @@ namespace Polly.TokenBucket
                     {
                         if (timeoutCancellationTokenSource.IsCancellationRequested)
                         {
-                            onTimeout(context, timeout, actionTask, ex);
+                            onThrottle(context, actionTask, ex);
                             throw new TokenBucketRejectedException("The delegate executed through TimeoutPolicy did not complete within the timeout.", ex);
                         }
 

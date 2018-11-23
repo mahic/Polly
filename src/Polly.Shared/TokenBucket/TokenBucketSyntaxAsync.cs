@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Polly.Timeout;
+using Polly.TokenBucket;
 using Polly.Utilities;
 
 namespace Polly
@@ -13,12 +14,12 @@ namespace Polly
         /// <param name="seconds">The number of seconds after which to timeout.</param>
         /// <exception cref="System.ArgumentOutOfRangeException">seconds;Value must be greater than zero.</exception>
         /// <returns>The policy instance.</returns>
-        public static TimeoutPolicy TimeoutAsync(int seconds)
+        public static TokenBucketPolicy TokenBucketAsync(int seconds)
         {
             TimeoutValidator.ValidateSecondsTimeout(seconds);
             Func<Context, TimeSpan, Task, Exception, Task> doNothingAsync = (_, __, ___, ____) => TaskHelper.EmptyTask;
 
-            return TimeoutAsync(ctx => TimeSpan.FromSeconds(seconds), TimeoutStrategy.Optimistic, doNothingAsync);
+            return TokenBucketAsync(ctx => TimeSpan.FromSeconds(seconds), TimeoutStrategy.Optimistic, doNothingAsync);
         }
 
         /// <summary>
@@ -28,12 +29,12 @@ namespace Polly
         /// <param name="timeoutStrategy">The timeout strategy.</param>
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">seconds;Value must be greater than zero.</exception>
-        public static TimeoutPolicy TimeoutAsync(int seconds, TimeoutStrategy timeoutStrategy)
+        public static TokenBucketPolicy TokenBucketAsync(int seconds, TimeoutStrategy timeoutStrategy)
         {
             TimeoutValidator.ValidateSecondsTimeout(seconds);
             Func<Context, TimeSpan, Task, Exception, Task> doNothingAsync = (_, __, ___, ____) => TaskHelper.EmptyTask;
 
-            return TimeoutAsync(ctx => TimeSpan.FromSeconds(seconds), timeoutStrategy, doNothingAsync);
+            return TokenBucketAsync(ctx => TimeSpan.FromSeconds(seconds), timeoutStrategy, doNothingAsync);
         }
 
         /// <summary>
@@ -45,13 +46,13 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">seconds;Value must be greater than zero.</exception>
         /// <exception cref="System.ArgumentNullException">onTimeoutAsync</exception>
-        public static TimeoutPolicy TimeoutAsync(int seconds, Func<Context
+        public static TokenBucketPolicy TokenBucketAsync(int seconds, Func<Context
             , TimeSpan, Task, Task> onTimeoutAsync)
         {
             TimeoutValidator.ValidateSecondsTimeout(seconds);
             if (onTimeoutAsync == null) throw new ArgumentNullException(nameof(onTimeoutAsync));
 
-            return TimeoutAsync(ctx => TimeSpan.FromSeconds(seconds), TimeoutStrategy.Optimistic, onTimeoutAsync);
+            return TokenBucketAsync(ctx => TimeSpan.FromSeconds(seconds), TimeoutStrategy.Optimistic, onTimeoutAsync);
         }
 
         /// <summary>
@@ -63,12 +64,12 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">seconds;Value must be greater than zero.</exception>
         /// <exception cref="System.ArgumentNullException">onTimeoutAsync</exception>
-        public static TimeoutPolicy TimeoutAsync(int seconds, Func<Context, TimeSpan, Task, Exception, Task> onTimeoutAsync)
+        public static TokenBucketPolicy TokenBucketAsync(int seconds, Func<Context, TimeSpan, Task, Exception, Task> onTimeoutAsync)
         {
             if (seconds <= 0) throw new ArgumentOutOfRangeException(nameof(seconds));
             if (onTimeoutAsync == null) throw new ArgumentNullException(nameof(onTimeoutAsync));
 
-            return TimeoutAsync(ctx => TimeSpan.FromSeconds(seconds), TimeoutStrategy.Optimistic, onTimeoutAsync);
+            return TokenBucketAsync(ctx => TimeSpan.FromSeconds(seconds), TimeoutStrategy.Optimistic, onTimeoutAsync);
         }
 
         /// <summary>
@@ -81,11 +82,11 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">seconds;Value must be greater than zero.</exception>
         /// <exception cref="System.ArgumentNullException">seconds;Value must be greater than zero.</exception>
-        public static TimeoutPolicy TimeoutAsync(int seconds, TimeoutStrategy timeoutStrategy, Func<Context, TimeSpan, Task, Task> onTimeoutAsync)
+        public static TokenBucketPolicy TokenBucketAsync(int seconds, TimeoutStrategy timeoutStrategy, Func<Context, TimeSpan, Task, Task> onTimeoutAsync)
         {
             TimeoutValidator.ValidateSecondsTimeout(seconds);
 
-            return TimeoutAsync(ctx => TimeSpan.FromSeconds(seconds), timeoutStrategy, onTimeoutAsync);
+            return TokenBucketAsync(ctx => TimeSpan.FromSeconds(seconds), timeoutStrategy, onTimeoutAsync);
         }
 
         /// <summary>
@@ -98,11 +99,11 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">seconds;Value must be greater than zero.</exception>
         /// <exception cref="System.ArgumentNullException">seconds;Value must be greater than zero.</exception>
-        public static TimeoutPolicy TimeoutAsync(int seconds, TimeoutStrategy timeoutStrategy, Func<Context, TimeSpan, Task, Exception, Task> onTimeoutAsync)
+        public static TokenBucketPolicy TokenBucketAsync(int seconds, TimeoutStrategy timeoutStrategy, Func<Context, TimeSpan, Task, Exception, Task> onTimeoutAsync)
         {
             if (seconds <= 0) throw new ArgumentOutOfRangeException(nameof(seconds));
 
-            return TimeoutAsync(ctx => TimeSpan.FromSeconds(seconds), timeoutStrategy, onTimeoutAsync);
+            return TokenBucketAsync(ctx => TimeSpan.FromSeconds(seconds), timeoutStrategy, onTimeoutAsync);
         }
 
         /// <summary>
@@ -111,12 +112,12 @@ namespace Polly
         /// <param name="timeout">The timeout.</param>
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">timeout;Value must be a positive TimeSpan (or Timeout.InfiniteTimeSpan to indicate no timeout)</exception>
-        public static TimeoutPolicy TimeoutAsync(TimeSpan timeout)
+        public static TokenBucketPolicy TokenBucketAsync(TimeSpan timeout)
         {
             TimeoutValidator.ValidateTimeSpanTimeout(timeout);
             Func<Context, TimeSpan, Task, Exception, Task> doNothingAsync = (_, __, ___, ____) => TaskHelper.EmptyTask;
 
-            return TimeoutAsync(ctx => timeout, TimeoutStrategy.Optimistic, doNothingAsync);
+            return TokenBucketAsync(ctx => timeout, TimeoutStrategy.Optimistic, doNothingAsync);
         }
 
         /// <summary>
@@ -126,12 +127,12 @@ namespace Polly
         /// <param name="timeoutStrategy">The timeout strategy.</param>
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">timeout;Value must be a positive TimeSpan (or Timeout.InfiniteTimeSpan to indicate no timeout)</exception>
-        public static TimeoutPolicy TimeoutAsync(TimeSpan timeout, TimeoutStrategy timeoutStrategy)
+        public static TokenBucketPolicy TokenBucketAsync(TimeSpan timeout, TimeoutStrategy timeoutStrategy)
         {
             TimeoutValidator.ValidateTimeSpanTimeout(timeout);
             Func<Context, TimeSpan, Task, Exception, Task> doNothingAsync = (_, __, ___, ____) => TaskHelper.EmptyTask;
 
-            return TimeoutAsync(ctx => timeout, timeoutStrategy, doNothingAsync);
+            return TokenBucketAsync(ctx => timeout, timeoutStrategy, doNothingAsync);
         }
 
         /// <summary>
@@ -143,11 +144,11 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">timeout;Value must be a positive TimeSpan (or Timeout.InfiniteTimeSpan to indicate no timeout)</exception>
         /// <exception cref="System.ArgumentNullException">onTimeoutAsync</exception>
-        public static TimeoutPolicy TimeoutAsync(TimeSpan timeout, Func<Context, TimeSpan, Task, Task> onTimeoutAsync)
+        public static TokenBucketPolicy TokenBucketAsync(TimeSpan timeout, Func<Context, TimeSpan, Task, Task> onTimeoutAsync)
         {
             TimeoutValidator.ValidateTimeSpanTimeout(timeout);
 
-            return TimeoutAsync(ctx => timeout, TimeoutStrategy.Optimistic, onTimeoutAsync);
+            return TokenBucketAsync(ctx => timeout, TimeoutStrategy.Optimistic, onTimeoutAsync);
         }
 
         /// <summary>
@@ -159,11 +160,11 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">timeout;Value must be greater than zero.</exception>
         /// <exception cref="System.ArgumentNullException">onTimeoutAsync</exception>
-        public static TimeoutPolicy TimeoutAsync(TimeSpan timeout, Func<Context, TimeSpan, Task, Exception, Task> onTimeoutAsync)
+        public static TokenBucketPolicy TokenBucketAsync(TimeSpan timeout, Func<Context, TimeSpan, Task, Exception, Task> onTimeoutAsync)
         {
             TimeoutValidator.ValidateTimeSpanTimeout(timeout);
 
-            return TimeoutAsync(ctx => timeout, TimeoutStrategy.Optimistic, onTimeoutAsync);
+            return TokenBucketAsync(ctx => timeout, TimeoutStrategy.Optimistic, onTimeoutAsync);
         }
 
         /// <summary>
@@ -176,11 +177,11 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">timeout;Value must be a positive TimeSpan (or Timeout.InfiniteTimeSpan to indicate no timeout)</exception>
         /// <exception cref="System.ArgumentNullException">onTimeoutAsync</exception>
-        public static TimeoutPolicy TimeoutAsync(TimeSpan timeout, TimeoutStrategy timeoutStrategy, Func<Context, TimeSpan, Task, Task> onTimeoutAsync)
+        public static TokenBucketPolicy TokenBucketAsync(TimeSpan timeout, TimeoutStrategy timeoutStrategy, Func<Context, TimeSpan, Task, Task> onTimeoutAsync)
         {
             TimeoutValidator.ValidateTimeSpanTimeout(timeout);
 
-            return TimeoutAsync(ctx => timeout, timeoutStrategy, onTimeoutAsync);
+            return TokenBucketAsync(ctx => timeout, timeoutStrategy, onTimeoutAsync);
         }
 
         /// <summary>
@@ -193,11 +194,11 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">timeout;Value must be greater than zero.</exception>
         /// <exception cref="System.ArgumentNullException">onTimeoutAsync</exception>
-        public static TimeoutPolicy TimeoutAsync(TimeSpan timeout, TimeoutStrategy timeoutStrategy, Func<Context, TimeSpan, Task, Exception, Task> onTimeoutAsync)
+        public static TokenBucketPolicy TokenBucketAsync(TimeSpan timeout, TimeoutStrategy timeoutStrategy, Func<Context, TimeSpan, Task, Exception, Task> onTimeoutAsync)
         {
             TimeoutValidator.ValidateTimeSpanTimeout(timeout);
 
-            return TimeoutAsync(ctx => timeout, timeoutStrategy, onTimeoutAsync);
+            return TokenBucketAsync(ctx => timeout, timeoutStrategy, onTimeoutAsync);
         }
 
         /// <summary>
@@ -206,12 +207,12 @@ namespace Polly
         /// <param name="timeoutProvider">A function to provide the timeout for this execution.</param>
         /// <exception cref="System.ArgumentNullException">timeoutProvider</exception>
         /// <returns>The policy instance.</returns>
-        public static TimeoutPolicy TimeoutAsync(Func<TimeSpan> timeoutProvider)
+        public static TokenBucketPolicy TokenBucketAsync(Func<TimeSpan> timeoutProvider)
         {
             if (timeoutProvider == null) throw new ArgumentNullException(nameof(timeoutProvider));
 
             Func<Context, TimeSpan, Task, Exception, Task> doNothingAsync = (_, __, ___, ____) => TaskHelper.EmptyTask;
-            return TimeoutAsync(ctx => timeoutProvider(), TimeoutStrategy.Optimistic, doNothingAsync);
+            return TokenBucketAsync(ctx => timeoutProvider(), TimeoutStrategy.Optimistic, doNothingAsync);
         }
 
         /// <summary>
@@ -221,12 +222,12 @@ namespace Polly
         /// <param name="timeoutStrategy">The timeout strategy.</param>
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentNullException">timeoutProvider</exception>
-        public static TimeoutPolicy TimeoutAsync(Func<TimeSpan> timeoutProvider, TimeoutStrategy timeoutStrategy)
+        public static TokenBucketPolicy TokenBucketAsync(Func<TimeSpan> timeoutProvider, TimeoutStrategy timeoutStrategy)
         {
             if (timeoutProvider == null) throw new ArgumentNullException(nameof(timeoutProvider));
 
             Func<Context, TimeSpan, Task, Exception, Task> doNothingAsync = (_, __, ___, ____) => TaskHelper.EmptyTask;
-            return TimeoutAsync(ctx => timeoutProvider(), timeoutStrategy, doNothingAsync);
+            return TokenBucketAsync(ctx => timeoutProvider(), timeoutStrategy, doNothingAsync);
         }
 
         /// <summary>
@@ -238,11 +239,11 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentNullException">timeoutProvider</exception>
         /// <exception cref="System.ArgumentNullException">onTimeoutAsync</exception>
-        public static TimeoutPolicy TimeoutAsync(Func<TimeSpan> timeoutProvider, Func<Context, TimeSpan, Task, Task> onTimeoutAsync)
+        public static TokenBucketPolicy TokenBucketAsync(Func<TimeSpan> timeoutProvider, Func<Context, TimeSpan, Task, Task> onTimeoutAsync)
         {
             if (timeoutProvider == null) throw new ArgumentNullException(nameof(timeoutProvider));
 
-            return TimeoutAsync(ctx => timeoutProvider(), TimeoutStrategy.Optimistic, onTimeoutAsync);
+            return TokenBucketAsync(ctx => timeoutProvider(), TimeoutStrategy.Optimistic, onTimeoutAsync);
         }
 
         /// <summary>
@@ -254,11 +255,11 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentNullException">timeoutProvider</exception>
         /// <exception cref="System.ArgumentNullException">onTimeoutAsync</exception>
-        public static TimeoutPolicy TimeoutAsync(Func<TimeSpan> timeoutProvider, Func<Context, TimeSpan, Task, Exception, Task> onTimeoutAsync)
+        public static TokenBucketPolicy TokenBucketAsync(Func<TimeSpan> timeoutProvider, Func<Context, TimeSpan, Task, Exception, Task> onTimeoutAsync)
         {
             if (timeoutProvider == null) throw new ArgumentNullException(nameof(timeoutProvider));
 
-            return TimeoutAsync(ctx => timeoutProvider(), TimeoutStrategy.Optimistic, onTimeoutAsync);
+            return TokenBucketAsync(ctx => timeoutProvider(), TimeoutStrategy.Optimistic, onTimeoutAsync);
         }
 
         /// <summary>
@@ -271,11 +272,11 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentNullException">timeoutProvider</exception>
         /// <exception cref="System.ArgumentNullException">onTimeoutAsync</exception>
-        public static TimeoutPolicy TimeoutAsync(Func<TimeSpan> timeoutProvider, TimeoutStrategy timeoutStrategy, Func<Context, TimeSpan, Task, Task> onTimeoutAsync)
+        public static TokenBucketPolicy TokenBucketAsync(Func<TimeSpan> timeoutProvider, TimeoutStrategy timeoutStrategy, Func<Context, TimeSpan, Task, Task> onTimeoutAsync)
         {
             if (timeoutProvider == null) throw new ArgumentNullException(nameof(timeoutProvider));
 
-            return TimeoutAsync(ctx => timeoutProvider(), timeoutStrategy, onTimeoutAsync);
+            return TokenBucketAsync(ctx => timeoutProvider(), timeoutStrategy, onTimeoutAsync);
         }
 
         /// <summary>
@@ -288,11 +289,11 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentNullException">timeoutProvider</exception>
         /// <exception cref="System.ArgumentNullException">onTimeoutAsync</exception>
-        public static TimeoutPolicy TimeoutAsync(Func<TimeSpan> timeoutProvider, TimeoutStrategy timeoutStrategy, Func<Context, TimeSpan, Task, Exception, Task> onTimeoutAsync)
+        public static TokenBucketPolicy TokenBucketAsync(Func<TimeSpan> timeoutProvider, TimeoutStrategy timeoutStrategy, Func<Context, TimeSpan, Task, Exception, Task> onTimeoutAsync)
         {
             if (timeoutProvider == null) throw new ArgumentNullException(nameof(timeoutProvider));
 
-            return TimeoutAsync(ctx => timeoutProvider(), timeoutStrategy, onTimeoutAsync);
+            return TokenBucketAsync(ctx => timeoutProvider(), timeoutStrategy, onTimeoutAsync);
         }
 
         /// <summary>
@@ -301,11 +302,11 @@ namespace Polly
         /// <param name="timeoutProvider">A function to provide the timeout for this execution.</param>
         /// <exception cref="System.ArgumentNullException">timeoutProvider</exception>
         /// <returns>The policy instance.</returns>
-        public static TimeoutPolicy TimeoutAsync(Func<Context, TimeSpan> timeoutProvider)
+        public static TokenBucketPolicy TokenBucketAsync(Func<Context, TimeSpan> timeoutProvider)
         {
             Func<Context, TimeSpan, Task, Exception, Task> doNothingAsync = (_, __, ___, ____) => TaskHelper.EmptyTask;
 
-            return TimeoutAsync(timeoutProvider, TimeoutStrategy.Optimistic, doNothingAsync);
+            return TokenBucketAsync(timeoutProvider, TimeoutStrategy.Optimistic, doNothingAsync);
         }
 
         /// <summary>
@@ -315,11 +316,11 @@ namespace Polly
         /// <param name="timeoutStrategy">The timeout strategy.</param>
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentNullException">timeoutProvider</exception>
-        public static TimeoutPolicy TimeoutAsync(Func<Context, TimeSpan> timeoutProvider, TimeoutStrategy timeoutStrategy)
+        public static TokenBucketPolicy TokenBucketAsync(Func<Context, TimeSpan> timeoutProvider, TimeoutStrategy timeoutStrategy)
         {
             Func<Context, TimeSpan, Task, Exception, Task> doNothingAsync = (_, __, ___, ____) => TaskHelper.EmptyTask;
 
-            return TimeoutAsync(timeoutProvider, timeoutStrategy, doNothingAsync);
+            return TokenBucketAsync(timeoutProvider, timeoutStrategy, doNothingAsync);
         }
 
         /// <summary>
@@ -331,9 +332,9 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentNullException">timeoutProvider</exception>
         /// <exception cref="System.ArgumentNullException">onTimeoutAsync</exception>
-        public static TimeoutPolicy TimeoutAsync(Func<Context, TimeSpan> timeoutProvider, Func<Context, TimeSpan, Task, Task> onTimeoutAsync)
+        public static TokenBucketPolicy TokenBucketAsync(Func<Context, TimeSpan> timeoutProvider, Func<Context, TimeSpan, Task, Task> onTimeoutAsync)
         {
-            return TimeoutAsync(timeoutProvider, TimeoutStrategy.Optimistic, onTimeoutAsync);
+            return TokenBucketAsync(timeoutProvider, TimeoutStrategy.Optimistic, onTimeoutAsync);
         }
 
         /// <summary>
@@ -345,9 +346,9 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentNullException">timeoutProvider</exception>
         /// <exception cref="System.ArgumentNullException">onTimeoutAsync</exception>
-        public static TimeoutPolicy TimeoutAsync(Func<Context, TimeSpan> timeoutProvider, Func<Context, TimeSpan, Task, Exception, Task> onTimeoutAsync)
+        public static TokenBucketPolicy TokenBucketAsync(Func<Context, TimeSpan> timeoutProvider, Func<Context, TimeSpan, Task, Exception, Task> onTimeoutAsync)
         {
-            return TimeoutAsync(timeoutProvider, TimeoutStrategy.Optimistic, onTimeoutAsync);
+            return TokenBucketAsync(timeoutProvider, TimeoutStrategy.Optimistic, onTimeoutAsync);
         }
 
         /// <summary>
@@ -360,11 +361,11 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentNullException">timeoutProvider</exception>
         /// <exception cref="System.ArgumentNullException">onTimeoutAsync</exception>
-        public static TimeoutPolicy TimeoutAsync(Func<Context, TimeSpan> timeoutProvider, TimeoutStrategy timeoutStrategy, Func<Context, TimeSpan, Task, Task> onTimeoutAsync)
+        public static TokenBucketPolicy TokenBucketAsync(Func<Context, TimeSpan> timeoutProvider, TimeoutStrategy timeoutStrategy, Func<Context, TimeSpan, Task, Task> onTimeoutAsync)
         {
             if (onTimeoutAsync == null) throw new ArgumentNullException(nameof(onTimeoutAsync));
 
-            return TimeoutAsync(timeoutProvider, timeoutStrategy, (ctx, timeout, task, ex) => onTimeoutAsync(ctx, timeout, task));
+            return TokenBucketAsync(timeoutProvider, timeoutStrategy, (ctx, timeout, task, ex) => onTokenBucketAsync(ctx, timeout, task));
         }
 
         /// <summary>
@@ -377,13 +378,13 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentNullException">timeoutProvider</exception>
         /// <exception cref="System.ArgumentNullException">onTimeoutAsync</exception>
-        public static TimeoutPolicy TimeoutAsync(Func<Context, TimeSpan> timeoutProvider, TimeoutStrategy timeoutStrategy
+        public static TokenBucketPolicy TokenBucketAsync(Func<Context, TimeSpan> timeoutProvider, TimeoutStrategy timeoutStrategy
             , Func<Context, TimeSpan, Task, Exception, Task> onTimeoutAsync)
         {
             if (timeoutProvider == null) throw new ArgumentNullException(nameof(timeoutProvider));
             if (onTimeoutAsync == null) throw new ArgumentNullException(nameof(onTimeoutAsync));
 
-            return new TimeoutPolicy(
+            return new TokenBucketPolicy(
                 (action, context, cancellationToken, continueOnCapturedContext) => TimeoutEngine.ImplementationAsync(
                     async (ctx, ct) => { await action(ctx, ct).ConfigureAwait(continueOnCapturedContext); return EmptyStruct.Instance; },
                     context,

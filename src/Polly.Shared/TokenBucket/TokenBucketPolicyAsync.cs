@@ -3,21 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Polly.TokenBucket;
 
-namespace Polly.Timeout
+namespace Polly.TokenBucket
 {
-    public partial class TimeoutPolicy : ITimeoutPolicy
+    public partial class TokenBucketPolicy : ITokenBucketPolicy
     {
-        internal TimeoutPolicy(Func<Func<Context, CancellationToken, Task>, Context, CancellationToken, bool, Task> asyncExceptionPolicy)
+        internal TokenBucketPolicy(Func<Func<Context, CancellationToken, Task>, Context, CancellationToken, bool, Task> asyncExceptionPolicy)
            : base(asyncExceptionPolicy, Enumerable.Empty<ExceptionPredicate>())
         {
         }
 
     }
 
-    public partial class TimeoutPolicy<TResult> : ITimeoutPolicy<TResult>
+    public partial class TokenBucketPolicy<TResult> : TokenBucketPolicy<TResult>
     {
-        internal TimeoutPolicy(
+        internal TokenBucketPolicy(
             Func<Func<Context, CancellationToken, Task<TResult>>, Context, CancellationToken, bool, Task<TResult>> asyncExecutionPolicy
             ) : base(asyncExecutionPolicy, Enumerable.Empty<ExceptionPredicate>(), Enumerable.Empty<ResultPredicate<TResult>>())
         {

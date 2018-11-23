@@ -3,15 +3,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using Polly.Utilities;
 
-namespace Polly.Timeout
+namespace Polly.TokenBucket
 {
-    internal static partial class TimeoutEngine
+    internal static partial class TokenBucketEngine
     {
         internal static async Task<TResult> ImplementationAsync<TResult>(
             Func<Context, CancellationToken, Task<TResult>> action, 
             Context context, 
             Func<Context, TimeSpan> timeoutProvider,
-            TimeoutStrategy timeoutStrategy,
+            TokenBucketStrategy timeoutStrategy,
             Func<Context, TimeSpan, Task, Exception, Task> onTimeoutAsync, 
             CancellationToken cancellationToken, 
             bool continueOnCapturedContext)
@@ -28,7 +28,7 @@ namespace Polly.Timeout
 
                     try
                     {
-                        if (timeoutStrategy == TimeoutStrategy.Optimistic)
+                        if (timeoutStrategy == TokenBucketStrategy.Optimistic)
                         {
                             SystemClock.CancelTokenAfter(timeoutCancellationTokenSource, timeout);
                             return await action(context, combinedToken).ConfigureAwait(continueOnCapturedContext);
@@ -50,7 +50,7 @@ namespace Polly.Timeout
                         if (timeoutCancellationTokenSource.IsCancellationRequested)
                         {
                             await onTimeoutAsync(context, timeout, actionTask, ex).ConfigureAwait(continueOnCapturedContext);
-                            throw new TimeoutRejectedException("The delegate executed asynchronously through TimeoutPolicy did not complete within the timeout.", ex);
+                            throw new TokenBucketRejectedException("The delegate executed asynchronously through TimeoutPolicy did not complete within the timeout.", ex);
                         }
 
                         throw;

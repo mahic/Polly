@@ -14,12 +14,12 @@ namespace Polly
         /// <param name="seconds">The number of seconds after which to timeout.</param>
         /// <exception cref="System.ArgumentOutOfRangeException">seconds;Value must be greater than zero.</exception>
         /// <returns>The policy instance.</returns>
-        public static TokenBucketPolicy Timeout(int seconds)
+        public static TokenBucketPolicy TokenBucket(int seconds)
         {
             TokenBucketValidator.ValidateSecondsTimeout(seconds);
             Action<Context, TimeSpan, Task, Exception> doNothing = (_, __, ___, ____) => { };
 
-            return Timeout(ctx => TimeSpan.FromSeconds(seconds), TimeoutStrategy.Optimistic, doNothing);
+            return TokenBucket(ctx => TimeSpan.FromSeconds(seconds), TimeoutStrategy.Optimistic, doNothing);
         }
 
         /// <summary>
@@ -29,12 +29,12 @@ namespace Polly
         /// <param name="timeoutStrategy">The timeout strategy.</param>
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">seconds;Value must be greater than zero.</exception>
-        public static TimeoutPolicy Timeout(int seconds, TimeoutStrategy timeoutStrategy)
+        public static TokenBucketPolicy TokenBucket(int seconds, TimeoutStrategy timeoutStrategy)
         {
-            TimeoutValidator.ValidateSecondsTimeout(seconds);
+            TokenBucketValidator.ValidateSecondsTimeout(seconds);
             Action<Context, TimeSpan, Task, Exception> doNothing = (_, __, ___, ____) => { };
 
-            return Timeout(ctx => TimeSpan.FromSeconds(seconds), timeoutStrategy, doNothing);
+            return TokenBucket(ctx => TimeSpan.FromSeconds(seconds), timeoutStrategy, doNothing);
         }
 
         /// <summary>
@@ -46,11 +46,11 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">seconds;Value must be greater than zero.</exception>
         /// <exception cref="System.ArgumentNullException">onTimeout</exception>
-        public static TimeoutPolicy Timeout(int seconds, Action<Context, TimeSpan, Task> onTimeout)
+        public static TokenBucketPolicy TokenBucket(int seconds, Action<Context, TimeSpan, Task> onTimeout)
         {
-            TimeoutValidator.ValidateSecondsTimeout(seconds);
+            TokenBucketValidator.ValidateSecondsTimeout(seconds);
 
-            return Timeout(ctx => TimeSpan.FromSeconds(seconds), TimeoutStrategy.Optimistic, onTimeout);
+            return TokenBucket(ctx => TimeSpan.FromSeconds(seconds), TimeoutStrategy.Optimistic, onTimeout);
         }
 
         /// <summary>
@@ -62,11 +62,11 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">seconds;Value must be greater than zero.</exception>
         /// <exception cref="System.ArgumentNullException">onTimeout</exception>
-        public static TimeoutPolicy Timeout(int seconds, Action<Context, TimeSpan, Task, Exception> onTimeout)
+        public static TokenBucketPolicy TokenBucket(int seconds, Action<Context, TimeSpan, Task, Exception> onTimeout)
         {
             if (seconds <= 0) throw new ArgumentOutOfRangeException(nameof(seconds));
 
-            return Timeout(ctx => TimeSpan.FromSeconds(seconds), TimeoutStrategy.Optimistic, onTimeout);
+            return TokenBucket(ctx => TimeSpan.FromSeconds(seconds), TimeoutStrategy.Optimistic, onTimeout);
         }
 
         /// <summary>
@@ -79,11 +79,11 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">seconds;Value must be greater than zero.</exception>
         /// <exception cref="System.ArgumentNullException">onTimeout</exception>
-        public static TimeoutPolicy Timeout(int seconds, TimeoutStrategy timeoutStrategy, Action<Context, TimeSpan, Task> onTimeout)
+        public static TokenBucketPolicy TokenBucket(int seconds, TimeoutStrategy timeoutStrategy, Action<Context, TimeSpan, Task> onTimeout)
         {
-            TimeoutValidator.ValidateSecondsTimeout(seconds);
+            TokenBucketValidator.ValidateSecondsTimeout(seconds);
 
-            return Timeout(ctx => TimeSpan.FromSeconds(seconds), timeoutStrategy, onTimeout);
+            return TokenBucket(ctx => TimeSpan.FromSeconds(seconds), timeoutStrategy, onTimeout);
         }
 
         /// <summary>
@@ -96,11 +96,11 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">seconds;Value must be greater than zero.</exception>
         /// <exception cref="System.ArgumentNullException">onTimeout</exception>
-        public static TimeoutPolicy Timeout(int seconds, TimeoutStrategy timeoutStrategy, Action<Context, TimeSpan, Task, Exception> onTimeout)
+        public static TokenBucketPolicy TokenBucket(int seconds, TimeoutStrategy timeoutStrategy, Action<Context, TimeSpan, Task, Exception> onTimeout)
         {
             if (seconds <= 0) throw new ArgumentOutOfRangeException(nameof(seconds));
 
-            return Timeout(ctx => TimeSpan.FromSeconds(seconds), timeoutStrategy, onTimeout);
+            return TokenBucket(ctx => TimeSpan.FromSeconds(seconds), timeoutStrategy, onTimeout);
         }
 
         /// <summary>
@@ -109,12 +109,12 @@ namespace Polly
         /// <param name="timeout">The timeout.</param>
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">timeout;Value must be a positive TimeSpan (or Timeout.InfiniteTimeSpan to indicate no timeout)</exception>
-        public static TimeoutPolicy Timeout(TimeSpan timeout)
+        public static TokenBucketPolicy TokenBucket(TimeSpan timeout)
         {
-            TimeoutValidator.ValidateTimeSpanTimeout(timeout);
+            TokenBucketValidator.ValidateTimeSpanTimeout(timeout);
             Action<Context, TimeSpan, Task, Exception> doNothing = (_, __, ___, ____) => { };
 
-            return Timeout(ctx => timeout, TimeoutStrategy.Optimistic, doNothing);
+            return TokenBucket(ctx => timeout, TimeoutStrategy.Optimistic, doNothing);
         }
 
         /// <summary>
@@ -124,12 +124,12 @@ namespace Polly
         /// <param name="timeoutStrategy">The timeout strategy.</param>
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">timeout;Value must be a positive TimeSpan (or Timeout.InfiniteTimeSpan to indicate no timeout)</exception>
-        public static TimeoutPolicy Timeout(TimeSpan timeout, TimeoutStrategy timeoutStrategy)
+        public static TokenBucketPolicy TokenBucket(TimeSpan timeout, TimeoutStrategy timeoutStrategy)
         {
-            TimeoutValidator.ValidateTimeSpanTimeout(timeout);
+            TokenBucketValidator.ValidateTimeSpanTimeout(timeout);
             Action<Context, TimeSpan, Task, Exception> doNothing = (_, __, ___, ____) => { };
 
-            return Timeout(ctx => timeout, timeoutStrategy, doNothing);
+            return TokenBucket(ctx => timeout, timeoutStrategy, doNothing);
         }
 
         /// <summary>
@@ -141,11 +141,11 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">timeout;Value must be a positive TimeSpan (or Timeout.InfiniteTimeSpan to indicate no timeout)</exception>
         /// <exception cref="System.ArgumentNullException">onTimeout</exception>
-        public static TimeoutPolicy Timeout(TimeSpan timeout, Action<Context, TimeSpan, Task> onTimeout)
+        public static TokenBucketPolicy TokenBucket(TimeSpan timeout, Action<Context, TimeSpan, Task> onTimeout)
         {
-            TimeoutValidator.ValidateTimeSpanTimeout(timeout);
+            TokenBucketValidator.ValidateTimeSpanTimeout(timeout);
 
-            return Timeout(ctx => timeout, TimeoutStrategy.Optimistic, onTimeout);
+            return TokenBucket(ctx => timeout, TimeoutStrategy.Optimistic, onTimeout);
         }
 
         /// <summary>
@@ -157,11 +157,11 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">timeout;Value must be greater than zero.</exception>
         /// <exception cref="System.ArgumentNullException">onTimeout</exception>
-        public static TimeoutPolicy Timeout(TimeSpan timeout, Action<Context, TimeSpan, Task, Exception> onTimeout)
+        public static TokenBucketPolicy TokenBucket(TimeSpan timeout, Action<Context, TimeSpan, Task, Exception> onTimeout)
         {
-            TimeoutValidator.ValidateTimeSpanTimeout(timeout);
+            TokenBucketValidator.ValidateTimeSpanTimeout(timeout);
 
-            return Timeout(ctx => timeout, TimeoutStrategy.Optimistic, onTimeout);
+            return TokenBucket(ctx => timeout, TimeoutStrategy.Optimistic, onTimeout);
         }
 
         /// <summary>
@@ -174,11 +174,11 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">timeout;Value must be a positive TimeSpan (or Timeout.InfiniteTimeSpan to indicate no timeout)</exception>
         /// <exception cref="System.ArgumentNullException">onTimeout</exception>
-        public static TimeoutPolicy Timeout(TimeSpan timeout, TimeoutStrategy timeoutStrategy, Action<Context, TimeSpan, Task> onTimeout)
+        public static TokenBucketPolicy TokenBucket(TimeSpan timeout, TimeoutStrategy timeoutStrategy, Action<Context, TimeSpan, Task> onTimeout)
         {
-            TimeoutValidator.ValidateTimeSpanTimeout(timeout);
+            TokenBucketValidator.ValidateTimeSpanTimeout(timeout);
 
-            return Timeout(ctx => timeout, timeoutStrategy, onTimeout);
+            return TokenBucket(ctx => timeout, timeoutStrategy, onTimeout);
         }
 
         /// <summary>
@@ -191,11 +191,11 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">timeout;Value must be greater than zero.</exception>
         /// <exception cref="System.ArgumentNullException">onTimeout</exception>
-        public static TimeoutPolicy Timeout(TimeSpan timeout, TimeoutStrategy timeoutStrategy, Action<Context, TimeSpan, Task, Exception> onTimeout)
+        public static TokenBucketPolicy TokenBucket(TimeSpan timeout, TimeoutStrategy timeoutStrategy, Action<Context, TimeSpan, Task, Exception> onTimeout)
         {
-            TimeoutValidator.ValidateTimeSpanTimeout(timeout);
+            TokenBucketValidator.ValidateTimeSpanTimeout(timeout);
 
-            return Timeout(ctx => timeout, timeoutStrategy, onTimeout);
+            return TokenBucket(ctx => timeout, timeoutStrategy, onTimeout);
         }
 
         /// <summary>
@@ -204,12 +204,12 @@ namespace Polly
         /// <param name="timeoutProvider">A function to provide the timeout for this execution.</param>
         /// <exception cref="System.ArgumentNullException">timeoutProvider</exception>
         /// <returns>The policy instance.</returns>
-        public static TimeoutPolicy Timeout(Func<TimeSpan> timeoutProvider)
+        public static TokenBucketPolicy TokenBucket(Func<TimeSpan> timeoutProvider)
         {
             if (timeoutProvider == null) throw new ArgumentNullException(nameof(timeoutProvider));
 
             Action<Context, TimeSpan, Task, Exception> doNothing = (_, __, ___, ____) => { };
-            return Timeout(ctx => timeoutProvider(), TimeoutStrategy.Optimistic, doNothing);
+            return TokenBucket(ctx => timeoutProvider(), TimeoutStrategy.Optimistic, doNothing);
         }
 
         /// <summary>
@@ -219,12 +219,12 @@ namespace Polly
         /// <param name="timeoutStrategy">The timeout strategy.</param>
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentNullException">timeoutProvider</exception>
-        public static TimeoutPolicy Timeout(Func<TimeSpan> timeoutProvider, TimeoutStrategy timeoutStrategy)
+        public static TokenBucketPolicy TokenBucket(Func<TimeSpan> timeoutProvider, TimeoutStrategy timeoutStrategy)
         {
             if (timeoutProvider == null) throw new ArgumentNullException(nameof(timeoutProvider));
 
             Action<Context, TimeSpan, Task, Exception> doNothing = (_, __, ___, ____) => { };
-            return Timeout(ctx => timeoutProvider(), timeoutStrategy, doNothing);
+            return TokenBucket(ctx => timeoutProvider(), timeoutStrategy, doNothing);
         }
 
         /// <summary>
@@ -236,11 +236,11 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentNullException">timeoutProvider</exception>
         /// <exception cref="System.ArgumentNullException">onTimeout</exception>
-        public static TimeoutPolicy Timeout(Func<TimeSpan> timeoutProvider, Action<Context, TimeSpan, Task> onTimeout)
+        public static TokenBucketPolicy TokenBucket(Func<TimeSpan> timeoutProvider, Action<Context, TimeSpan, Task> onTimeout)
         {
             if (timeoutProvider == null) throw new ArgumentNullException(nameof(timeoutProvider));
 
-            return Timeout(ctx => timeoutProvider(), TimeoutStrategy.Optimistic, onTimeout);
+            return TokenBucket(ctx => timeoutProvider(), TimeoutStrategy.Optimistic, onTimeout);
         }
 
         /// <summary>
@@ -252,11 +252,11 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentNullException">timeoutProvider</exception>
         /// <exception cref="System.ArgumentNullException">onTimeout</exception>
-        public static TimeoutPolicy Timeout(Func<TimeSpan> timeoutProvider, Action<Context, TimeSpan, Task, Exception> onTimeout)
+        public static TokenBucketPolicy TokenBucket(Func<TimeSpan> timeoutProvider, Action<Context, TimeSpan, Task, Exception> onTimeout)
         {
             if (timeoutProvider == null) throw new ArgumentNullException(nameof(timeoutProvider));
 
-            return Timeout(ctx => timeoutProvider(), TimeoutStrategy.Optimistic, onTimeout);
+            return TokenBucket(ctx => timeoutProvider(), TimeoutStrategy.Optimistic, onTimeout);
         }
 
         /// <summary>
@@ -269,11 +269,11 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentNullException">timeoutProvider</exception>
         /// <exception cref="System.ArgumentNullException">onTimeout</exception>
-        public static TimeoutPolicy Timeout(Func<TimeSpan> timeoutProvider, TimeoutStrategy timeoutStrategy, Action<Context, TimeSpan, Task> onTimeout)
+        public static TokenBucketPolicy TokenBucket(Func<TimeSpan> timeoutProvider, TimeoutStrategy timeoutStrategy, Action<Context, TimeSpan, Task> onTimeout)
         {
             if (timeoutProvider == null) throw new ArgumentNullException(nameof(timeoutProvider));
 
-            return Timeout(ctx => timeoutProvider(), timeoutStrategy, onTimeout);
+            return TokenBucket(ctx => timeoutProvider(), timeoutStrategy, onTimeout);
         }
 
         /// <summary>
@@ -286,11 +286,11 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentNullException">timeoutProvider</exception>
         /// <exception cref="System.ArgumentNullException">onTimeout</exception>
-        public static TimeoutPolicy Timeout(Func<TimeSpan> timeoutProvider, TimeoutStrategy timeoutStrategy, Action<Context, TimeSpan, Task, Exception> onTimeout)
+        public static TokenBucketPolicy TokenBucket(Func<TimeSpan> timeoutProvider, TimeoutStrategy timeoutStrategy, Action<Context, TimeSpan, Task, Exception> onTimeout)
         {
             if (timeoutProvider == null) throw new ArgumentNullException(nameof(timeoutProvider));
 
-            return Timeout(ctx => timeoutProvider(), timeoutStrategy, onTimeout);
+            return TokenBucket(ctx => timeoutProvider(), timeoutStrategy, onTimeout);
         }
 
         /// <summary>
@@ -299,10 +299,10 @@ namespace Polly
         /// <param name="timeoutProvider">A function to provide the timeout for this execution.</param>
         /// <exception cref="System.ArgumentNullException">timeoutProvider</exception>
         /// <returns>The policy instance.</returns>
-        public static TimeoutPolicy Timeout(Func<Context, TimeSpan> timeoutProvider)
+        public static TokenBucketPolicy TokenBucket(Func<Context, TimeSpan> timeoutProvider)
         {
             Action<Context, TimeSpan, Task, Exception> doNothing = (_, __, ___, ____) => { };
-            return Timeout(timeoutProvider, TimeoutStrategy.Optimistic, doNothing);
+            return TokenBucket(timeoutProvider, TimeoutStrategy.Optimistic, doNothing);
         }
 
         /// <summary>
@@ -312,10 +312,10 @@ namespace Polly
         /// <param name="timeoutStrategy">The timeout strategy.</param>
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentNullException">timeoutProvider</exception>
-        public static TimeoutPolicy Timeout(Func<Context, TimeSpan> timeoutProvider, TimeoutStrategy timeoutStrategy)
+        public static TokenBucketPolicy TokenBucket(Func<Context, TimeSpan> timeoutProvider, TimeoutStrategy timeoutStrategy)
         {
             Action<Context, TimeSpan, Task, Exception> doNothing = (_, __, ___, ____) => { };
-            return Timeout(timeoutProvider, timeoutStrategy, doNothing);
+            return TokenBucket(timeoutProvider, timeoutStrategy, doNothing);
         }
 
         /// <summary>
@@ -327,9 +327,9 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentNullException">timeoutProvider</exception>
         /// <exception cref="System.ArgumentNullException">onTimeout</exception>
-        public static TimeoutPolicy Timeout(Func<Context, TimeSpan> timeoutProvider, Action<Context, TimeSpan, Task> onTimeout)
+        public static TokenBucketPolicy TokenBucket(Func<Context, TimeSpan> timeoutProvider, Action<Context, TimeSpan, Task> onTimeout)
         {
-            return Timeout(timeoutProvider, TimeoutStrategy.Optimistic, onTimeout);
+            return TokenBucket(timeoutProvider, TimeoutStrategy.Optimistic, onTimeout);
         }
 
         /// <summary>
@@ -341,9 +341,9 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentNullException">timeoutProvider</exception>
         /// <exception cref="System.ArgumentNullException">onTimeout</exception>
-        public static TimeoutPolicy Timeout(Func<Context, TimeSpan> timeoutProvider, Action<Context, TimeSpan, Task, Exception> onTimeout)
+        public static TokenBucketPolicy TokenBucket(Func<Context, TimeSpan> timeoutProvider, Action<Context, TimeSpan, Task, Exception> onTimeout)
         {
-            return Timeout(timeoutProvider, TimeoutStrategy.Optimistic, onTimeout);
+            return TokenBucket(timeoutProvider, TimeoutStrategy.Optimistic, onTimeout);
         }
 
         /// <summary>
@@ -356,11 +356,11 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentNullException">timeoutProvider</exception>
         /// <exception cref="System.ArgumentNullException">onTimeout</exception>
-        public static TimeoutPolicy Timeout(Func<Context, TimeSpan> timeoutProvider, TimeoutStrategy timeoutStrategy, Action<Context, TimeSpan, Task> onTimeout)
+        public static TokenBucketPolicy TokenBucket(Func<Context, TimeSpan> timeoutProvider, TimeoutStrategy timeoutStrategy, Action<Context, TimeSpan, Task> onTimeout)
         {
             if (onTimeout == null) throw new ArgumentNullException(nameof(onTimeout));
 
-            return Timeout(timeoutProvider, timeoutStrategy, (ctx, timeout, task, ex) => onTimeout(ctx, timeout, task));
+            return TokenBucket(timeoutProvider, timeoutStrategy, (ctx, timeout, task, ex) => onTimeout(ctx, timeout, task));
         }
 
         /// <summary>
@@ -373,12 +373,12 @@ namespace Polly
         /// <returns>The policy instance.</returns>
         /// <exception cref="System.ArgumentNullException">timeoutProvider</exception>
         /// <exception cref="System.ArgumentNullException">onTimeout</exception>
-        public static TimeoutPolicy Timeout(Func<Context, TimeSpan> timeoutProvider, TimeoutStrategy timeoutStrategy, Action<Context, TimeSpan, Task, Exception> onTimeout)
+        public static TokenBucketPolicy TokenBucket(Func<Context, TimeSpan> timeoutProvider, TimeoutStrategy timeoutStrategy, Action<Context, TimeSpan, Task, Exception> onTimeout)
         {
             if (timeoutProvider == null) throw new ArgumentNullException(nameof(timeoutProvider));
             if (onTimeout == null) throw new ArgumentNullException(nameof(onTimeout));
 
-            return new TimeoutPolicy(
+            return new TokenBucketPolicy(
                 (action, context, cancellationToken) => TimeoutEngine.Implementation(
                     (ctx, ct) => { action(ctx, ct); return EmptyStruct.Instance; },
                     context,

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading;
-using Polly.Timeout;
 using Polly.Utilities;
 
 namespace Polly.TokenBucket

@@ -16,7 +16,7 @@ namespace Polly.TokenBucket
 
     }
 
-    public partial class TokenBucketPolicy<TResult> : TokenBucketPolicy<TResult>
+    public partial class TokenBucketPolicy<TResult> : ITokenBucketPolicy<TResult>
     {
         internal TokenBucketPolicy(
             Func<Func<Context, CancellationToken, Task<TResult>>, Context, CancellationToken, bool, Task<TResult>> asyncExecutionPolicy

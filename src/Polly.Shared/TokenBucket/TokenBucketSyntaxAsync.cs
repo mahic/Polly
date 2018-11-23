@@ -365,7 +365,7 @@ namespace Polly
         {
             if (onTimeoutAsync == null) throw new ArgumentNullException(nameof(onTimeoutAsync));
 
-            return TokenBucketAsync(timeoutProvider, timeoutStrategy, (ctx, timeout, task, ex) => onTokenBucketAsync(ctx, timeout, task));
+            return TokenBucketAsync(timeoutProvider, timeoutStrategy, (ctx, timeout, task, ex) => onTimeoutAsync(ctx, timeout, task));
         }
 
         /// <summary>

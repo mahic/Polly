@@ -19,11 +19,15 @@ namespace Polly.TokenBucket
 
         public void UpdateTokenCount(int currentTicks, double size)
         {
+            if (size > _bucketSize)
+                throw new ArgumentOutOfRangeException("size", "The requested size is greater than the bucket size");
             var ticksNow = currentTicks;
             var delta = ticksNow - LastCalledTicks;
-            var tokenCountIncrease = (delta / 1000) * _bucketFillRate;
-            var tempBucketCount = Math.Max(BucketTokenCount + tokenCountIncrease, _bucketSize);
+            var tokenCountIncrease = (delta / 1000.0) * _bucketFillRate;
+            var tempBucketCount = Math.Min(BucketTokenCount + tokenCountIncrease, _bucketSize);
             var newBucketCount = tempBucketCount - size;
+            if (newBucketCount < 0.0)
+                throw new TokenBucketRejectedException("The bucket does not have enough tokens for the request");
             BucketTokenCount = newBucketCount;
             LastCalledTicks = ticksNow;
         }
